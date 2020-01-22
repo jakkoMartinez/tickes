@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
             Role::firstOrCreate(['name' => 'Usuario']);
             $this->command->info('Solo se agregó la función de usuario predeterminada.');
         }
-        $this->call(RegistrosTableSeeder::class);
+        //$this->call(RegistrosTableSeeder::class);
             
     }        
 }
