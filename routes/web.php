@@ -23,8 +23,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('roles','CUsuario\RoleController');
     Route::resource('users','CUsuario\UserController');
     Route::resource('tickets','RegistroController');
-    Route::post('entrega/search', 'TicketController@search')->name('entrega.search');
-    Route::get('tickets/search', 'TicketController@search')->name('tickets.search');
+    //Route::post('entrega/search', 'TicketController@search')->name('entrega.search');
+    //Route::get('tickets/search', 'TicketController@search')->name('tickets.search');
 
 
 });

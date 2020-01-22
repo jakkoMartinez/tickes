@@ -27,14 +27,18 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+
       
        if(empty(Auth::user()->getRoleNames()[0])){
-            return view('home');     
+        return view('home'); 
 
        }else{
         return redirect()->route('tickets.index'); 
        
        }
+       
+      
          
     }
 

@@ -57,7 +57,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'idcard' => 'required|max:10|unique:users,idcard',//poner esto despues de max:10--|ecuador:ci
+            'idcard' => 'required|max:10|ecuador:ci|unique:users,idcard',//poner esto despues de max:10--|ecuador:ci
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'same:confirm-password|required|string|min:8',
             'rol' => 'required'

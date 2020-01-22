@@ -3,6 +3,24 @@
 @section('content')
 <div class="container">
     <div class="row">
+        <div class="row align-items-center">
+            <div class="col-8">
+                <strong>Total:</strong>
+                <label class="badge badge-primary">{{$total}}</label>                   
+            </div> 
+            <div class="col-8">
+                <strong>Entregados:</strong>
+                <label class="badge badge-success">{{$entregados}}</label>                   
+            </div>
+            <div class="col-8">
+                <strong>Entregados por Mi:</strong>
+                <label class="badge badge-warning">{{$pormi}}</label>                   
+            </div>   
+            <div class="col-8">
+                <strong>Faltantes:</strong>
+                <label class="badge badge-danger">{{$faltantes}}</label>                   
+            </div>                               
+        </div>                
         <div class="col-md-12">
             <div class="page-header">
                 <h1>
@@ -24,6 +42,9 @@
                 </h1>
             </div>
         </div>
+        
+           
+                      
         <div class="card shadow">                   
             <div class="card-header border-0">
                 <div class="row align-items-center">
@@ -31,8 +52,16 @@
                         <h3 class="mb-0">{{ __('Datos') }}</h3>
                     </div>                            
                 </div>
-            </div>               
-       
+                <div class="row align-items-center">
+                    <div class="col-lg-12 margin-tb">                    
+                        <div class="pull-right">
+                            <a class="btn btn-primary" href="{{ route('tickets.index') }}"> Atras</a>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+                        
+            
             <div class="card-body">                                    
                 <div class="col-12">
                     @if (session('status'))
@@ -73,9 +102,9 @@
                                 </td>
                                 <td>
                                     @if($registro->ticket==true)
-                                    <label class="badge badge-danger">Si</label>
+                                    <label class="badge badge-success">Si</label>
                                     @else
-                                    <label class="badge badge-success">No</label>
+                                    <label class="badge badge-danger">No</label>
                                     @endif
                                     
                                 </td>

@@ -13,7 +13,6 @@ class RegistroController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(['role:Administrador']);
         $this->middleware('permission:registros-listar|registros-crear|registros-editar|registros-borrar', ['only' => ['index','store']]);
         $this->middleware('permission:registros-crear', ['only' => ['create','store']]);
         $this->middleware('permission:registros-editar', ['only' => ['edit','update']]);
@@ -32,14 +31,22 @@ class RegistroController extends Controller
     {
         $cedula  = $request->get('cedula');
         $nombre  = $request->get('nombre');
-    	$apellido = $request->get('apellido');   
+        $apellido = $request->get('apellido'); 
+
+        $entregados = Registro::where('ticket','=',true)->count();
+        $pormi = Registro::where('ticket','=',true)    
+                ->where('user_id','=',Auth::user()->id)
+                ->count();
+        $entregados = Registro::where('ticket','=',true)->count();
+        $faltantes = Registro::where('ticket', false)->count();;
+        $total = Registro::count();
         $registros = Registro::where('ticket', false)
             ->cedula($cedula)
     		->nombre($nombre)
     		->apellido($apellido)
     		->paginate(100);
 
-    	return view('registros.index', compact('registros'));
+    	return view('registros.index', compact('registros','entregados','pormi','faltantes','total'));
     }
 
     /**
@@ -100,7 +107,7 @@ class RegistroController extends Controller
     {
         //
         $this->validate($request, [            
-            'cedula' => 'required|max:10|ecuador:ci',//poner esto despues de max:10--|ecuador:ci           
+            'cedula' => 'required|max:10|ecuador:ci|unique:registros,cedula',//poner esto despues de max:10--|ecuador:ci           
         ]);
         $registro = Registro::find($id);
         $input = $request->all();  

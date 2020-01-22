@@ -5,7 +5,7 @@
 
 @section('image')
 <div 
-    style="background-image: url('{{ asset('theme') }}/image/404.png');" 
+    style="background-image: url('{{ asset('theme') }}/image/404.jpg');" 
     class="absolute pin bg-cover bg-no-repeat md:bg-left lg:bg-center">
 </div>
 @endsection
