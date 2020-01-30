@@ -23,6 +23,7 @@
 </head>
 <body>
     <div id="app">
+        
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
@@ -47,10 +48,15 @@
                             </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registro Usuarios') }}</a>
                                 </li>
                             @endif
                         @else
+                        @can('zonas-editar')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('zonas.index') }}">{{ __('Zonas') }}</a>
+                        </li>
+                        @endcan
                         @can('roles-editar')
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('roles.index') }}">{{ __('Roles') }}</a>
@@ -62,10 +68,17 @@
                         </li>
                         @endcan
                         @can('registros-editar')
-                        <li class="nav-item">
+                        <li class="nav-item dropdown">
                             <a class="nav-link" href="{{ route('tickets.index') }}">{{ __('Tickets') }}</a>
                         </li>
-                        @endcan                       
+                        @endcan 
+                        @can('registros-borrar')
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="{{ route('registros.eliminar') }}">{{ __('Borrar Tickets') }}</a>     
+                        </li>
+                        @endcan 
+                        
+                        
                             <li class="nav-item dropdown">
                                
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>                                   
@@ -76,7 +89,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Salir') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -89,8 +102,8 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
+            @include('flash-message')
             @yield('content')
         </main>
     </div>

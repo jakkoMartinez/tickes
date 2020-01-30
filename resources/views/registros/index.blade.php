@@ -27,22 +27,33 @@
                     Busqueda de Datos
                     {{ Form::open(['route' => 'tickets.index', 'method' => 'GET', 'class' => 'form-inline pull-right']) }}
                         <div class="form-group">
-                            {{ Form::text('cedula', null, ['class' => 'form-control', 'placeholder' => 'cedula']) }}
+                            {{ Form::text('cedula', null, ['class' => 'form-control', 'placeholder' => 'Cedula']) }}
                         </div>
                         <div class="form-group">
-                            {{ Form::text('nombre', null, ['class' => 'form-control', 'placeholder' => 'nombre']) }}
+                            {{ Form::text('nombre', null, ['class' => 'form-control', 'placeholder' => 'Nombre']) }}
                         </div>
                         <div class="form-group">
-                            {{ Form::text('apellido', null, ['class' => 'form-control', 'placeholder' => 'apellido']) }}
+                            {{ Form::text('apellido', null, ['class' => 'form-control', 'placeholder' => 'Apellido']) }}
+                        </div>
+                        <div class="form-group">
+                            {{ Form::text('provincia', null, ['class' => 'form-control', 'placeholder' => 'Ciudad']) }}
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-outline-primary">Buscar</button>                            
                         </div>
+                       
                     {{ Form::close() }}
                 </h1>
+                {{--! 
+                     <div class="col-12 text-right">
+                    @can('registros-crear')
+                        <a href="{{ route('tickets.create') }}" class="btn btn-sm btn-primary">{{ __('+ Nuevo Ticket') }}</a>
+                    @endcan
+                </div>
+                    !--}}
+               
             </div>
-        </div>
-        
+        </div>       
            
                       
         <div class="card shadow">                   
@@ -56,11 +67,12 @@
                     <div class="col-lg-12 margin-tb">                    
                         <div class="pull-right">
                             <a class="btn btn-primary" href="{{ route('tickets.index') }}"> Atras</a>
-                        </div>
+                        </div>                    
                     </div>
+                   
                 </div>
             </div>  
-                        
+                                 
             
             <div class="card-body">                                    
                 <div class="col-12">
@@ -79,7 +91,7 @@
                             <tr>
                                 <th scope="col">{{ __('Nombres') }}</th>
                                 <th scope="col">{{ __('Cedula') }}</th>
-                                <th scope="col">{{ __('Provincia') }}</th>
+                                <th scope="col">{{ __('Ciudad') }}</th>
                                 <th scope="col">{{ __('Discapacidad') }}</th> 
                                 <th scope="col">{{ __('Ticket Entregado') }}</th> 
                                 <th scope="col">{{ __('Fecha Registro') }}</th> 
@@ -93,7 +105,7 @@
                                 <td>{{ $registro->cedula }}</td>
                                 <td>{{ $registro->provincia }}</td>
                                 <td>
-                                    @if($registro->discapacidad==true)
+                                    @if($registro->discapacidad=='SI')
                                     <label class="badge badge-danger">Si</label>
                                     @else
                                     <label class="badge badge-success">No</label>

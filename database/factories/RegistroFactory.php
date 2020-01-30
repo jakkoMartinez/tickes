@@ -13,7 +13,7 @@ $factory->define(Registro::class, function (Faker $faker) {
         'apellido' => $faker->lastname,
         'cedula' => Str::random(10),
         'provincia' => $faker->city,
-        'direccion' => $faker->address,
+        //'direccion' => $faker->address,
         'email' => $faker->unique()->safeEmail,
         
     ];

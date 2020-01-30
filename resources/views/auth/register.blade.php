@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+                <div class="card-header">{{ __('Registro') }}</div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
@@ -15,7 +15,8 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('* Nombres') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                
+                                <input id="name" type="text" style="text-transform:uppercase" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +30,7 @@
                             <label for="lastname" class="col-md-4 col-form-label text-md-right">{{ __('* Apellidos') }}</label>
 
                             <div class="col-md-6">
-                                <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+                                <input id="lastname" type="text"  style="text-transform:uppercase" onkeyup="javascript:this.value=this.value.toUpperCase();" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
 
                                 @error('lastname')
                                     <span class="invalid-feedback" role="alert">

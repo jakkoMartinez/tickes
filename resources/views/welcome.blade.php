@@ -78,12 +78,10 @@
                     @endauth
                 </div>
             @endif
-
             <div class="content">
                 <div class="title m-b-md">
                     Entrega de Tickets
                 </div>
-
               
                 </div>
             </div>

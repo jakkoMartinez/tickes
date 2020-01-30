@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Registro;
+use Carbon\Carbon;
+use App\Ticketzona;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+
 
 class RegistroController extends Controller
 {
@@ -17,6 +21,7 @@ class RegistroController extends Controller
         $this->middleware('permission:registros-crear', ['only' => ['create','store']]);
         $this->middleware('permission:registros-editar', ['only' => ['edit','update']]);
         $this->middleware('permission:registros-borrar', ['only' => ['destroy']]);
+        $this->middleware('permission:registros-borrar', ['only' => ['misdelete']]);
         
     }
     
@@ -31,7 +36,8 @@ class RegistroController extends Controller
     {
         $cedula  = $request->get('cedula');
         $nombre  = $request->get('nombre');
-        $apellido = $request->get('apellido'); 
+        $apellido = $request->get('apellido');
+        $provincia = $request->get('provincia'); 
 
         $entregados = Registro::where('ticket','=',true)->count();
         $pormi = Registro::where('ticket','=',true)    
@@ -43,7 +49,8 @@ class RegistroController extends Controller
         $registros = Registro::where('ticket', false)
             ->cedula($cedula)
     		->nombre($nombre)
-    		->apellido($apellido)
+            ->apellido($apellido)
+            ->provincia($provincia)
     		->paginate(100);
 
     	return view('registros.index', compact('registros','entregados','pormi','faltantes','total'));
@@ -56,7 +63,12 @@ class RegistroController extends Controller
      */
     public function create()
     {
-        //
+        //$zonas=DB::table('ticketzonas')
+         //->whereColumn('cantidad','>', 'entregados')
+         //->pluck('nombre', 'id')          
+         //->toArray();       
+        
+        //return view('registros.create',compact('zonas'));
         
     }
 
@@ -69,6 +81,30 @@ class RegistroController extends Controller
     public function store(Request $request)
     {
         //
+        $this->validate($request, [
+            'nombre' => 'required|string|max:255',
+            'apellido' => 'required|string|max:255',
+            'cedula' => 'required|max:10|ecuador:ci|unique:registros,cedula',//poner esto despues de max:10--|ecuador:ci
+            'provincia' => 'required|string|max:255',
+            'discapacidad' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:registros,email',
+            //'ticket' => 'required',
+            //'ticketzona_id' => 'required',
+            
+        ]);
+        $input = $request->all();
+        $input['ticket'] = true; 
+        $input['user_id'] = Auth::user()->id; 
+        //$countreg = Registro::where(['ticketzona_id' => $input['ticketzona_id']])->count();
+        //dd($countreg);
+        //$countreg= $countreg+1;
+        //DB::table('ticketzonas')
+        //->where('id', $input['ticketzona_id'])
+        //->update(['entregados' => $countreg]);
+        
+        $registro = Registro::create($input);
+        return redirect()->route('tickets.index')
+                        ->with('success','Registro de Ticket Creado con Exito');
     }
 
     /**
@@ -90,9 +126,14 @@ class RegistroController extends Controller
      */
     public function edit($id)
     {
-         //
+         
+         //$zonas=DB::table('ticketzonas')
+         //->whereColumn('cantidad','>', 'entregados')
+         //->pluck('nombre', 'id') 
+         //->toArray();
+       
         $registro = Registro::find($id);                        
-        return view('registros.edit',compact('registro'));
+        return view('registros.edit',compact('registro'));//,'zonas'
         
     }
 
@@ -107,16 +148,23 @@ class RegistroController extends Controller
     {
         //
         $this->validate($request, [            
-            'cedula' => 'required|max:10|ecuador:ci|unique:registros,cedula',//poner esto despues de max:10--|ecuador:ci           
+            'cedula' => 'required|max:10|ecuador:ci|unique:registros,cedula',//poner esto despues de max:10--|ecuador:ci   
+           // 'ticketzona_id' => 'required',        
         ]);
         $registro = Registro::find($id);
         $input = $request->all();  
         $input['ticket'] = true;   
         $input['user_id'] = Auth::user()->id; 
-          
-        $registro->update($input);     
+        //$countreg =Registro::where(['ticketzona_id' => $input['ticketzona_id']])->count();
+        //dd($countreg);
+        //$countreg=$countreg+1;
+       // DB::table('ticketzonas')
+       // ->where('id', $input['ticketzona_id'])
+       // ->update(['entregados' => $countreg]);
+        
+        $registro->update($input);       
             return redirect()->route('tickets.index')
-                        ->with('success','Usuario Actualizado con Exito');
+                        ->with('success','Registro Actualizado con Exito');
      }
 
     /**
@@ -125,10 +173,29 @@ class RegistroController extends Controller
      * @param  \App\Registro  $registro
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Registro $registro)
+    public function destroy($id)
     {
         //
+        Registro::where('ticket', false)
+        ->whereDate('created_at','<=',now()->subDays(3))
+        ->delete();
+                   
+        return redirect()->route('tickets.index')
+        ->with('success','Registros Borrados con Exito');
+       
     }  
-  
+
+    
+    public function misdelete(Request $request)
+    {
+        //
+        $registrosborrar=Registro::where('ticket', false)
+                ->whereDate('created_at','<=', now()->subDays(3))
+                ->paginate(100);   
+        $totalborrar=Registro::where('ticket', false)
+                ->whereDate('created_at','<=',now()->subDays(3))
+                ->count();                    
+    	return view('registros.misdelete', compact('registrosborrar','totalborrar'));
+    }    
 
 }

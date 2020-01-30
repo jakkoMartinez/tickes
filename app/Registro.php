@@ -15,7 +15,7 @@ class Registro extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre','apellido','cedula','provincia','direccion','discapacidad','email','ticket','user_id','created_at'
+       'id','nombre','apellido','cedula','provincia','discapacidad','email','ticket','user_id','created_at',//'ticketzona_id',
     ];
      //Query Scope
 
@@ -34,6 +34,11 @@ class Registro extends Model
      {
          if($apellido)
              return $query->where('apellido', 'LIKE', "%$apellido%");
+     }
+     public function scopeProvincia($query, $provincia)
+     {
+         if($provincia)
+             return $query->where('provincia', 'LIKE', "%$provincia%");
      }
  
 }

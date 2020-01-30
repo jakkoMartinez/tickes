@@ -17,7 +17,9 @@ class Permission extends \Spatie\Permission\Models\Permission
                 //users
                 'users-listar','users-crear','users-editar','users-borrar',                
                 //registros
-                'registros-listar','registros-crear','registros-editar','registros-borrar',              
+                'registros-listar','registros-crear','registros-editar','registros-borrar',   
+                 //zonas
+                 'zonas-listar','zonas-crear','zonas-editar','zonas-borrar',           
                 
             ];
         }
